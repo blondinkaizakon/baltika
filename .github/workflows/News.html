@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BALTIKA Legal Bar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #E2E2E2;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(242, 228, 146, 0.3);
+        }
+
+        .sidebar-item.active {
+            background-color: #F2E492;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, #91C8E6 0%, #3B71B7 100%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-card:nth-child(2) {
+            background: linear-gradient(135deg, #F2E492 0%, #E2A317 100%);
+        }
+
+        .story-card:nth-child(3) {
+            background: linear-gradient(135deg, #E70B15 0%, #B5060F 100%);
+        }
+
+        .message-bubble-user {
+            background-color: #F2E492;
+        }
+
+        .message-bubble-lawyer {
+            background-color: #F2F2F2;
+        }
+
+        .beer-label-card {
+            border: 2px solid #3B71B7;
+            background-color: white;
+        }
+
+        .generate-button {
+            background-color: #3B71B7;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .generate-button:hover {
+            transform: rotate(15deg);
+            transition: transform 0.3s ease;
+        }
+
+        .ai-assistant-bubble {
+            background-color: #91C8E6;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .ai-assistant-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 30px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #91C8E6 transparent;
+        }
+
+        .news-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #3B71B7;
+        }
+
+        .news-feed-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .sidebar-icon {
+            font-size: 2.5rem;
+            width: 3rem;
+            text-align: center;
+            margin-right: 1rem;
+            color: #3B71B7;
+        }
+
+        .doczilla-icon {
+            width: 3rem;
+            height: 3rem;
+            margin-right: 1rem;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjM0I3MUI3IiBkPSJNNDQ4IDBjLTM1LjMgMC02NCAyOC43LTY0IDY0djM4NGMwIDM1LjMgMjguNyA2NCA2NCA2NHM2NC0yOC43IDY0LTY0VjY0YzAtMzUuMy0yOC43LTY0LTY0LTY0em0wIDQ0OGMtMTcuNyAwLTMyLTE0LjMtMzItMzJWOTZjMC0xNy43IDE0LjMtMzIgMzItMzJzMzIgMTQuMyAzMiAzMnYzMjBjMCAxNy43LTE0LjMgMzItMzIgMzJ6TTI1NiA2NC0zNS4zIDAtNjQgNjR2MzIwYzAgMzUuMyAyOC43IDY0IDY0IDY0czY0LTI4LjcgNjQtNjRWMTI4YzAtMzUuMy0yOC43LTY0LTY0LTY0em0wIDQ0OC0xNy43IDAtMzItMTQuMy0zMi0zMlYxMjhjMC0xNy43IDE0LjMtMzIgMzItMzJzMzIgMTQuMyAzMiAzMnYzMjBjMCAxNy43LTE0LjMgMzItMzIgMzJ6TTY0IDM4NC0xNy43IDAtMzItMTQuMy0zMi0zMlY2NGMwLTE3LjcgMTQuMy0zMiAzMi0zMnMzMiAxNC4zIDMyIDMydjI4OGMwIDE3LjctMTQuMyAzMi0zMiAzMnoiLz48L3N2Zz4=');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .chat-container {
+            height: calc(100vh - 280px);
+            overflow-y: auto;
+        }
+
+        .document-template {
+            border-left: 4px solid #3B71B7;
+        }
+
+        .training-card {
+            background: linear-gradient(135deg, #F2F2F2 0%, #E2E2E2 100%);
+        }
+
+        .training-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #91C8E6 0%, #3B71B7 100%);
+        }
+
+        .settings-card {
+            border-left: 4px solid #3B71B7;
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+    <!-- Left Sidebar -->
+    <div class="w-64 bg-white h-full flex-shrink-0 border-r border-gray-200 flex flex-col">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex items-center">
+                <img src="https://via.placeholder.com/40" alt="Baltika Logo" class="h-10 w-10">
+                <span class="ml-2 font-bold text-xl">BALTIKA Legal Bar</span>
+            </div>
+        </div>
+
+        <nav class="flex-grow overflow-y-auto">
+            <div class="space-y-1 p-2">
+                <a href="#" class="sidebar-item active flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="dashboard">
+                    <i class="fas fa-user sidebar-icon"></i>
+                    Профиль
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="messages">
+                    <i class="fas fa-envelope sidebar-icon"></i>
+                    Мои сообщения
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="subscriptions">
+                    <i class="fas fa-bell sidebar-icon"></i>
+                    Мои подписки
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="knowledge">
+                    <i class="fas fa-graduation-cap sidebar-icon"></i>
+                    Бар знаний
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="documents">
+                    <div class="doczilla-icon"></div>
+                    Свари документ
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="ai-editor">
+                    <i class="fas fa-robot sidebar-icon"></i>
+                    AI-редактор
+                </a>
+
+                <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="training">
+                    <i class="fas fa-dumbbell sidebar-icon"></i>
+                    Тренажёр
+                </a>
+            </div>
+        </nav>
+
+        <div class="p-4 border-t border-gray-200">
+            <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" data-page="settings">
+                <i class="fas fa-cog sidebar-icon"></i>
+                Настройки
+            </a>
+
+            <a href="#" class="sidebar-item flex items-center px-4 py-3 text-base font-medium rounded-md" id="logout-btn">
+                <i class="fas fa-sign-out-alt sidebar-icon"></i>
+                Выход
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Header -->
+        <header class="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="https://via.placeholder.com/150x50?text=BALTIKA+Legal+Bar" alt="Baltika Legal Bar Logo" class="h-10">
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="font-medium text-lg">Иван Петров</p>
+                    <p class="text-sm text-gray-500">Маркетинг</p>
+                </div>
+                <img src="https://via.placeholder.com/40" alt="User Avatar" class="h-10 w-10 rounded-full">
+            </div>
+        </header>
+
+        <!-- Dashboard Page -->
+        <main class="page active flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="dashboard">
+            <!-- Story Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="story-card rounded-xl p-6 text-white">
+                    <i class="fas fa-file-invoice-dollar text-4xl mb-2"></i>
+                    <h3 class="font-bold text-xl mb-2">Новые изменения в налоговом кодексе</h3>
+                    <p class="text-base mb-4">С 1 января 2024 года вступают в силу изменения...</p>
+                    <button class="text-sm font-medium px-4 py-1.5 bg-white text-[#3B71B7] rounded-full">Подробнее</button>
+                </div>
+
+                <div class="story-card rounded-xl p-6 text-white">
+                    <i class="fas fa-file-signature text-4xl mb-2"></i>
+                    <h3 class="font-bold text-xl mb-2">Обновление лицензионных соглашений</h3>
+                    <p class="text-base mb-4">Проверьте новые шаблоны для партнеров...</p>
+                    <button class="text-sm font-medium px-4 py-1.5 bg-white text-[#E2A317] rounded-full">Подробнее</button>
+                </div>
+
+                <div class="story-card rounded-xl p-6 text-white">
+                    <i class="fas fa-shield-alt text-4xl mb-2"></i>
+                    <h3 class="font-bold text-xl mb-2">Важно: изменения в GDPR</h3>
+                    <p class="text-base mb-4">Европейский регулятор внес поправки...</p>
+                    <button class="text-sm font-medium px-4 py-1.5 bg-white text-[#B5060F] rounded-full">Подробнее</button>
+                </div>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="flex items-start mb-6">
+                <img src="https://via.placeholder.com/60?text=AI" alt="AI Brewer" class="h-14 w-14 rounded-full mr-4">
+                <div class="ai-assistant-bubble p-5 max-w-lg">
+                    <p class="text-white font-medium text-lg">Приветствую! Я AI-помощник Пивовар, и на твои вопросы готовлю ответы только наивысшего качества. Что тебя интересует?</p>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative mb-8 max-w-2xl mx-auto">
+                <input type="text" placeholder="Поиск в базе знаний..." class="w-full pl-14 pr-4 py-3.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent text-base">
+                <i class="fas fa-search absolute left-5 top-4 h-5 w-5 text-[#91C8E6]"></i>
+            </div>
+
+            <!-- News Feed -->
+            <div class="bg-[#91C8E6] rounded-xl p-6">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-newspaper news-icon"></i>
+                    <h2 class="news-feed-title text-white">Лента новостей</h2>
+                </div>
+
+                <div class="space-y-5">
+                    <!-- News Item 1 -->
+                    <div class="bg-white rounded-lg p-5">
+                        <div class="flex items-start">
+                            <img src="https://via.placeholder.com/50" alt="Author" class="h-12 w-12 rounded-full mr-4">
+                            <div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-user-shield news-icon" style="font-size: 1.5rem;"></i>
+                                    <h3 class="font-bold text-lg">Обновление политики конфиденциальности</h3>
+                                </div>
+                                <p class="text-base text-gray-600">Алексей Смирнов • 2 часа назад</p>
+                                <p class="mt-2 text-base">Мы обновили нашу политику конфиденциальности в соответствии с новыми требованиями...</p>
+                                <div class="mt-3 flex space-x-3">
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#GDPR</span>
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#Compliance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 2 -->
+                    <div class="bg-white rounded-lg p-5">
+                        <div class="flex items-start">
+                            <img src="https://via.placeholder.com/50" alt="Author" class="h-12 w-12 rounded-full mr-4">
+                            <div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-chalkboard-teacher news-icon" style="font-size: 1.5rem;"></i>
+                                    <h3 class="font-bold text-lg">Вебинар: Изменения в трудовом законодательстве</h3>
+                                </div>
+                                <p class="text-base text-gray-600">Мария Иванова • Вчера</p>
+                                <p class="mt-2 text-base">Приглашаем всех сотрудников юридического отдела на вебинар 15 ноября в 15:00...</p>
+                                <div class="mt-3 flex space-x-3">
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#ТрудовоеПраво</span>
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#Обучение</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 3 -->
+                    <div class="bg-white rounded-lg p-5">
+                        <div class="flex items-start">
+                            <img src="https://via.placeholder.com/50" alt="Author" class="h-12 w-12 rounded-full mr-4">
+                            <div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-file-alt news-icon" style="font-size: 1.5rem;"></i>
+                                    <h3 class="font-bold text-lg">Новые шаблоны договоров поставки</h3>
+                                </div>
+                                <p class="text-base text-gray-600">Петр Васильев • 3 дня назад</p>
+                                <p class="mt-2 text-base">В разделе "Шаблоны документов" доступны обновленные версии договоров поставки...</p>
+                                <div class="mt-3 flex space-x-3">
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#Договоры</span>
+                                    <span class="text-sm px-3 py-1 bg-[#E2E2E2] rounded-full">#Шаблоны</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mt-6 text-base font-medium text-[#3B71B7] hover:text-[#2a568f] flex items-center">
+                    <i class="fas fa-chevron-down mr-2"></i>
+                    Показать больше новостей
+                </button>
+            </div>
+        </main>
+
+        <!-- Messages Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="messages">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-envelope mr-3 text-[#3B71B7]"></i>
+                    Мои сообщения
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left column - Conversations -->
+                    <div class="lg:col-span-1 border-r border-gray-200 pr-4">
+                        <div class="relative mb-4">
+                            <input type="text" placeholder="Поиск сообщений..." class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent text-base">
+                            <i class="fas fa-search absolute left-3 top-3 h-4 w-4 text-[#91C8E6]"></i>
+                        </div>
+
+                        <div class="space-y-2 overflow-y-auto" style="max-height: 70vh;">
+                            <!-- Conversation 1 -->
+                            <div class="flex items-center p-3 rounded-lg bg-[#F2E492] cursor-pointer">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">Алексей Смирнов</h4>
+                                    <p class="text-sm text-gray-600 truncate">Добрый день, Иван! Отправил вам договор...</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <span class="text-xs text-gray-500">12:30</span>
+                                    <span class="block h-2 w-2 bg-[#3B71B7] rounded-full ml-auto mt-1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 2 -->
+                            <div class="flex items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">Мария Иванова</h4>
+                                    <p class="text-sm text-gray-600 truncate">Напоминаю о вебинаре завтра в 15:00</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <span class="text-xs text-gray-500">Вчера</span>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 3 -->
+                            <div class="flex items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">Петр Васильев</h4>
+                                    <p class="text-sm text-gray-600 truncate">Новые шаблоны договоров уже в системе</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <span class="text-xs text-gray-500">3 дня</span>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 4 -->
+                            <div class="flex items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">Юридический отдел</h4>
+                                    <p class="text-sm text-gray-600 truncate">Обновление политики конфиденциальности</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <span class="text-xs text-gray-500">5 дней</span>
+                                </div>
+                            </div>
+
+                            <!-- Conversation 5 -->
+                            <div class="flex items-center p-3 rounded-lg hover:bg-gray-100 cursor-pointer">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                                <div>
+                                    <h4 class="font-bold">IT Support</h4>
+                                    <p class="text-sm text-gray-600 truncate">Ваш запрос в обработке #45678</p>
+                                </div>
+                                <div class="ml-auto text-right">
+                                    <span class="text-xs text-gray-500">Неделя</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column - Chat -->
+                    <div class="lg:col-span-2 pl-4">
+                        <div class="flex items-center mb-6">
+                            <img src="https://via.placeholder.com/50" alt="User" class="h-12 w-12 rounded-full mr-3">
+                            <div>
+                                <h4 class="font-bold">Алексей Смирнов</h4>
+                                <p class="text-sm text-gray-600">Юридический отдел</p>
+                            </div>
+                            <div class="ml-auto flex space-x-2">
+                                <button class="p-2 rounded-full hover:bg-gray-200">
+                                    <i class="fas fa-phone text-[#3B71B7]"></i>
+                                </button>
+                                <button class="p-2 rounded-full hover:bg-gray-200">
+                                    <i class="fas fa-video text-[#3B71B7]"></i>
+                                </button>
+                                <button class="p-2 rounded-full hover:bg-gray-200">
+                                    <i class="fas fa-ellipsis-v text-[#3B71B7]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="chat-container mb-4 space-y-4">
+                            <!-- Message from lawyer -->
+                            <div class="flex items-start">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-10 w-10 rounded-full mr-3">
+                                <div class="message-bubble-lawyer p-4 rounded-xl max-w-xs">
+                                    <p>Добрый день, Иван! Отправил вам договор на проверку. Пожалуйста, ознакомьтесь с пунктами 3.4 и 5.1.</p>
+                                    <p class="text-xs text-gray-500 mt-2">12:30</p>
+                                </div>
+                            </div>
+
+                            <!-- Message from user -->
+                            <div class="flex items-start justify-end">
+                                <div class="message-bubble-user p-4 rounded-xl max-w-xs">
+                                    <p>Спасибо, Алексей! У меня есть несколько вопросов по формулировкам в пункте 3.4. Можно ли их изменить?</p>
+                                    <p class="text-xs text-gray-500 mt-2">12:32</p>
+                                </div>
+                            </div>
+
+                            <!-- Message from lawyer -->
+                            <div class="flex items-start">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-10 w-10 rounded-full mr-3">
+                                <div class="message-bubble-lawyer p-4 rounded-xl max-w-xs">
+                                    <p>Конечно, какие именно изменения вы предлагаете? Я могу подготовить альтернативные варианты.</p>
+                                    <p class="text-xs text-gray-500 mt-2">12:35</p>
+                                </div>
+                            </div>
+
+                            <!-- Message with document -->
+                            <div class="flex items-start">
+                                <img src="https://via.placeholder.com/50" alt="User" class="h-10 w-10 rounded-full mr-3">
+                                <div class="p-4 rounded-xl max-w-xs border border-gray-200">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-file-word text-[#3B71B7] text-xl mr-2"></i>
+                                        <div>
+                                            <p class="font-medium">Договор_поставки.docx</p>
+                                            <p class="text-xs text-gray-500">245 KB</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-sm font-medium px-3 py-1 bg-[#3B71B7] text-white rounded-full">Скачать</button>
+                                    <p class="text-xs text-gray-500 mt-2">12:36</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <input type="text" placeholder="Напишите сообщение..." class="w-full pl-4 pr-16 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent text-base">
+                            <div class="absolute right-3 top-2 flex space-x-2">
+                                <button class="p-2 text-[#3B71B7] hover:text-[#2a568f]">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="p-2 text-[#3B71B7] hover:text-[#2a568f]">
+                                    <i class="far fa-smile"></i>
+                                </button>
+                                <button class="p-2 text-white bg-[#3B71B7] rounded-full w-8 h-8 flex items-center justify-center">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Subscriptions Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="subscriptions">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-bell mr-3 text-[#3B71B7]"></i>
+                    Мои подписки
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Subscription 1 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#91C8E6] rounded-full p-3 mr-3">
+                                <i class="fas fa-file-invoice-dollar text-white text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Налоговое право</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Получайте уведомления об изменениях в налоговом законодательстве РФ и международных нормах.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">12 активных подписок</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subscription 2 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#F2E492] rounded-full p-3 mr-3">
+                                <i class="fas fa-file-signature text-[#E2A317] text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Договорное право</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Обновления шаблонов договоров, судебная практика и изменения в законодательстве о сделках.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">8 активных подписок</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subscription 3 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#E70B15] rounded-full p-3 mr-3">
+                                <i class="fas fa-shield-alt text-white text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">GDPR и защита данных</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Изменения в регулировании защиты персональных данных в ЕС и других юрисдикциях.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">5 активных подписок</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subscription 4 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#3B71B7] rounded-full p-3 mr-3">
+                                <i class="fas fa-briefcase text-white text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Корпоративное право</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Изменения в корпоративном законодательстве, практика регистрации юридических лиц.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">3 активных подписки</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subscription 5 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#E2A317] rounded-full p-3 mr-3">
+                                <i class="fas fa-users text-white text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Трудовое право</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Изменения в ТК РФ, судебная практика по трудовым спорам, образцы кадровых документов.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">7 активных подписок</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subscription 6 -->
+                    <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-[#91C8E6] rounded-full p-3 mr-3">
+                                <i class="fas fa-globe-europe text-white text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Международное право</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Изменения в международных договорах, практика разрешения трансграничных споров.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">4 активных подписки</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#91C8E6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3B71B7]"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="font-bold text-lg mb-4">Добавить новую подписку</h3>
+                    <div class="flex">
+                        <select class="border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent flex-grow">
+                            <option>Выберите категорию</option>
+                            <option>Интеллектуальная собственность</option>
+                            <option>Недвижимость и строительство</option>
+                            <option>Финансовое регулирование</option>
+                            <option>Таможенное право</option>
+                            <option>Экологическое право</option>
+                        </select>
+                        <button class="bg-[#3B71B7] text-white px-6 py-2 rounded-r-lg hover:bg-[#2a568f]">Подписаться</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Knowledge Base Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="knowledge">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-graduation-cap mr-3 text-[#3B71B7]"></i>
+                    Бар знаний
+                </h2>
+
+                <div class="relative mb-8">
+                    <input type="text" placeholder="Поиск в базе знаний..." class="w-full pl-14 pr-4 py-3.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent text-base">
+                    <i class="fas fa-search absolute left-5 top-4 h-5 w-5 text-[#91C8E6]"></i>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <!-- Category 1 -->
+                    <div class="bg-[#91C8E6] rounded-xl p-6 text-white cursor-pointer hover:shadow-lg transition-shadow">
+                        <i class="fas fa-file-invoice-dollar text-4xl mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2">Налоговое право</h3>
+                        <p class="text-sm">256 документов</p>
+                    </div>
+
+                    <!-- Category 2 -->
+                    <div class="bg-[#F2E492] rounded-xl p-6 text-[#E2A317] cursor-pointer hover:shadow-lg transition-shadow">
+                        <i class="fas fa-file-signature text-4xl mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2">Договорное право</h3>
+                        <p class="text-sm">189 шаблонов</p>
+                    </div>
+
+                    <!-- Category 3 -->
+                    <div class="bg-[#E70B15] rounded-xl p-6 text-white cursor-pointer hover:shadow-lg transition-shadow">
+                        <i class="fas fa-shield-alt text-4xl mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2">GDPR</h3>
+                        <p class="text-sm">74 документа</p>
+                    </div>
+
+                    <!-- Category 4 -->
+                    <div class="bg-[#3B71B7] rounded-xl p-6 text-white cursor-pointer hover:shadow-lg transition-shadow">
+                        <i class="fas fa-briefcase text-4xl mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2">Корпоративное право</h3>
+                        <p class="text-sm">142 документа</p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="font-bold text-xl mb-4 flex items-center">
+                        <i class="fas fa-fire mr-2 text-[#E70B15]"></i>
+                        Популярные документы
+                    </h3>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Documents Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="documents">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <div class="doczilla-icon"></div>
+                    <span class="ml-2">Свари документ</span>
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left column - Document types -->
+                    <div class="lg:col-span-1">
+                        <div class="relative mb-6">
+                            <input type="text" placeholder="Поиск шаблонов..." class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent text-base">
+                            <i class="fas fa-search absolute left-3 top-3 h-4 w-4 text-[#91C8E6]"></i>
+                        </div>
+
+                        <div class="space-y-2">
+                            <!-- Category 1 -->
+                            <div class="document-template p-4 cursor-pointer hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold">Договоры</h3>
+                                    <i class="fas fa-chevron-down text-[#3B71B7]"></i>
+                                </div>
+                                <div class="mt-2 ml-2 space-y-2">
+                                    <p class="text-gray-600 hover:text-[#3B71B7]">Договор поставки</p>
+                                    <p class="text-gray-600 hover:text-[#3B71B7]">Договор аренды</p>
+                                    <p class="text-gray-600 hover:text-[#3B71B7]">Договор подряда</p>
+                                    <p class="text-gray-600 hover:text-[#3B71B7]">Договор возмездного оказания услуг</p>
+                                </div>
+                            </div>
+
+                            <!-- Category 2 -->
+                            <div class="document-template p-4 cursor-pointer hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold">Доверенности</h3>
+                                    <i class="fas fa-chevron-down text-[#3B71B7]"></i>
+                                </div>
+                            </div>
+
+                            <!-- Category 3 -->
+                            <div class="document-template p-4 cursor-pointer hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold">Кадровые документы</h3>
+                                    <i class="fas fa-chevron-down text-[#3B71B7]"></i>
+                                </div>
+                            </div>
+
+                            <!-- Category 4 -->
+                            <div class="document-template p-4 cursor-pointer hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold">Учредительные документы</h3>
+                                    <i class="fas fa-chevron-down text-[#3B71B7]"></i>
+                                </div>
+                            </div>
+
+                            <!-- Category 5 -->
+                            <div class="document-template p-4 cursor-pointer hover:bg-gray-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold">Прочие документы</h3>
+                                    <i class="fas fa-chevron-down text-[#3B71B7]"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column - Document editor -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="font-bold text-lg mb-4">Договор поставки товаров</h3>
+
+                            <div class="space-y-4 mb-6">
+                                <!-- Input field 1 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Название компании поставщика</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent" placeholder="Введите название">
+                                </div>
+
+                                <!-- Input field 2 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Название компании покупателя</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent" placeholder="Введите название">
+                                </div>
+
+                                <!-- Input field 3 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Предмет договора</label>
+                                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent" rows="3" placeholder="Опишите товары или услуги"></textarea>
+                                </div>
+
+                                <!-- Input field 4 -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Срок действия</label>
+                                        <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Сумма договора</label>
+                                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#91C8E6] focus:border-transparent" placeholder="Введите сумму">
+                                    </div>
+                                </div>
+
+                                <!-- Checkbox options -->
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="h-4 w-4 text-[#3B71B7] focus:ring-[#91C8E6] border-gray-300 rounded">
+                                        <span class="ml-2 text-sm text-gray-700">Включить условия о неустойке</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="h-4 w-4 text-[#3B71B7] focus:ring-[#91C8E6] border-gray-300 rounded">
+                                        <span class="ml-2 text-sm text-gray-700">Включить арбитражную оговорку</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="h-4 w-4 text-[#3B71B7] focus:ring-[#91C8E6] border-gray-300 rounded" checked>
+                                        <span class="ml-2 text-sm text-gray-700">Включить условия о конфиденциальности</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <button class="px-6 py-2 border border-[#3B71B7] text-[#3B71B7] rounded-lg hover:bg-[#3B71B7]/10">
+                                    Предпросмотр
+                                </button>
+                                <div class="space-x-3">
+                                    <button class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                        Сбросить
+                                    </button>
+                                    <button class="px-6 py-2 bg-[#3B71B7] text-white rounded-lg hover:bg-[#2a568f]">
+                                        Сгенерировать
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <h3 class="font-bold text-lg mb-4">Недавние документы</h3>
+
+                            <div class="space-y-3">
+                                <!-- Recent doc 1 -->
+                                <div class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <i class="fas fa-file-word text-[#3B71B7] text-xl mr-3"></i>
+                                    <div class="flex-grow">
+                                        <h4 class="font-medium">Договор_поставки_ООО_Ромашка.docx</h4>
+                                        <p class="text-sm text-gray-500">Создано 12.11.2023</p>
+                                    </div>
+                                    <button class="text-[#3B71B7] hover:text-[#2a568f] p-2">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Recent doc 2 -->
+                                <div class="flex items-center p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                                    <i class="fas fa-file-word text-[#3B71B7] text-xl mr-3"></i>
+                                    <div class="flex-grow">
+                                        <h4 class="font-medium">Договор_аренды_склада.docx</h4>
+                                        <p class="text-sm text-gray-500">Создано 05.11.2023</p>
+                                    </div>
+                                    <button class="text-[#3B71B7] hover:text-[#2a568f] p-2">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- AI Editor Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="ai-editor">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-robot mr-3 text-[#3B71B7]"></i>
+                    AI-редактор документов
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left column - AI tools -->
+                    <div class="lg:col-span-1">
+                        <div class="space-y-4">
+                            <!-- Tool 1 -->
+                            <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-[#91C8E6] rounded-full p-2 mr-3">
+                                        <i class="fas fa-magic text-white"></i>
+                                    </div>
+                                    <h3 class="font-bold">Улучшить текст</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Оптимизирует формулировки, делает текст более юридически точным</p>
+                            </div>
+
+                            <!-- Tool 2 -->
+                            <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-[#F2E492] rounded-full p-2 mr-3">
+                                        <i class="fas fa-search text-[#E2A317]"></i>
+                                    </div>
+                                    <h3 class="font-bold">Проверить риски</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Анализирует документ на наличие потенциальных юридических рисков</p>
+                            </div>
+
+                            <!-- Tool 3 -->
+                            <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-[#E70B15] rounded-full p-2 mr-3">
+                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </div>
+                                    <h3 class="font-bold">Найти противоречия</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Выявляет внутренние противоречия в документе</p>
+                            </div>
+
+                            <!-- Tool 4 -->
+                            <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-[#3B71B7] rounded-full p-2 mr-3">
+                                        <i class="fas fa-file-contract text-white"></i>
+                                    </div>
+                                    <h3 class="font-bold">Сравнить с шаблоном</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Сравнивает документ с эталонным шаблоном и выделяет различия</p>
+                            </div>
+
+                            <!-- Tool 5 -->
+                            <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-[#E2A317] rounded-full p-2 mr-3">
+                                        <i class="fas fa-language text-white"></i>
+                                    </div>
+                                    <h3 class="font-bold">Перевести документ</h3>
+                                </div>
+                                <p class="text-sm text-gray-600">Переводит документ на выбранный язык с сохранением юридической точности</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <h3 class="font-bold text-lg mb-3">История редактирования</h3>
+                            <div class="space-y-2">
+                                <p class="text-sm text-gray-600 p-2 hover:bg-gray-100 rounded cursor-pointer">Договор поставки - улучшение текста</p>
+                                <p class="text-sm text-gray-600 p-2 hover:bg-gray-100 rounded cursor-pointer">Проверка рисков - доверенность</p>
+                                <p class="text-sm text-gray-600 p-2 hover:bg-gray-100 rounded cursor-pointer">Сравнение с шаблоном - трудовой договор</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column - Document editor -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-lg">Редактор документа</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100">
+                                    <i class="fas fa-upload mr-1"></i> Загрузить
+                                </button>
+                                <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100">
+                                    <i class="fas fa-download mr-1"></i> Скачать
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-300 rounded-lg p-4 mb-4">
+                            <textarea class="w-full h-64 p-3 focus:outline-none resize-none" placeholder="Вставьте текст документа здесь..."></textarea>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <button class="p-2 text-gray-600 hover:text-[#3B71B7]">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="p-2 text-gray-600 hover:text-[#3B71B7]">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button class="p-2 text-gray-600 hover:text-[#3B71B7]">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                                <button class="p-2 text-gray-600 hover:text-[#3B71B7]">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                                <button class="p-2 text-gray-600 hover:text-[#3B71B7]">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                            </div>
+
+                            <button class="px-6 py-2 bg-[#3B71B7] text-white rounded-lg hover:bg-[#2a568f] flex items-center">
+                                <i class="fas fa-robot mr-2"></i> Анализировать
+                            </button>
+                        </div>
+
+                        <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                            <h3 class="font-bold text-lg mb-3 flex items-center">
+                                <i class="fas fa-lightbulb text-[#F2E492] mr-2"></i>
+                                Результаты анализа
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-[#91C8E6]">
+                                    <p class="font-medium">Рекомендация 1</p>
+                                    <p class="text-sm text-gray-600">Уточните формулировку в пункте 3.4 для избежания двусмысленности</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-[#F2E492]">
+                                    <p class="font-medium">Рекомендация 2</p>
+                                    <p class="text-sm text-gray-600">Добавьте условия о порядке разрешения споров</p>
+                                </div>
+                                <div class="p-3 bg-white rounded-lg border-l-4 border-[#E70B15]">
+                                    <p class="font-medium">Потенциальный риск</p>
+                                    <p class="text-sm text-gray-600">Пункт 5.1 может быть оспорен в суде на основании статьи 428 ГК РФ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Training Page -->
+        <main class="page flex-1 overflow-y-auto p-6 bg-[#E2E2E2]" id="training">
+            <div class="bg-white rounded-xl p-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-dumbbell mr-3 text-[#3B71B7]"></i>
+                    Юридический тренажёр
+                </h2>
+
+                <div class="mb-8">
+                    <h3 class="font-bold text-lg mb-4">Мои достижения</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="training-card p-4 rounded-lg border border-gray-200">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-[#91C8E6] rounded-full p-2 mr-3">
+                                    <i class="fas fa-medal text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Уровень</p>
+                                    <p class="font-bold">Новичок</p>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#3B71B7] h-2.5 rounded-full" style="width: 30%"></div>
+                            </div>
+                        </div>
+
+                        <div class="training-card p-4 rounded-lg border border-gray-200">
+                            <div class="flex items-center mb-2">
+                                <div class="bg-[#F2E492] rounded-full p-2 mr-3">
+                                    <i class="fas fa-star text-[#E2A317]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Очки</p>
+                                    <p class="font-bold">1,250</p>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-[#E2A317] h-2.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+
+                        <div class="training-card p-4 rounded-lg border border-gray-200">
+                            <div class="flex items-center mb-2">
+                                <div class="bg
+</html>
